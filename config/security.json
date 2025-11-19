@@ -1,0 +1,31 @@
+{
+    "security": {
+        "jwtSecret": "auto-generated",
+        "bcryptRounds": 12,
+        "sessionTimeout": 86400,
+        "rateLimit": {
+            "windowMs": 900000,
+            "maxRequests": 100
+        },
+        "cors": {
+            "allowedOrigins": [
+                "http://localhost:3000",
+                "https://tetra-ecosystem.vercel.app"
+            ]
+        }
+    },
+    "modules": {
+        "accessLevels": {
+            "standard": ["user"],
+            "premium": ["premium_user", "vip_user", "developer", "super_admin"],
+            "vip": ["vip_user", "developer", "super_admin"],
+            "developer": ["developer", "super_admin"],
+            "admin": ["super_admin"]
+        }
+    },
+    "admin": {
+        "masterUsername": "TetraMaster",
+        "masterEmail": "admin@tetra.eco",
+        "permissions": ["all"]
+    }
+}
