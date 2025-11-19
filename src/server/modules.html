@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏗️ ماژول‌ها - Tetra Ecosystem</title>
+    <style>
+        :root {
+            --primary: #00ff88;
+            --secondary: #302b63;
+            --dark: #0f0c29;
+            --light: #ffffff;
+            --accent: #ff00ff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: linear-gradient(135deg, var(--dark), var(--secondary));
+            color: var(--light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-link {
+            color: var(--light);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link.active {
+            background: var(--primary);
+            color: var(--dark);
+            font-weight: bold;
+        }
+
+        .main-container {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-title {
+            font-size: 3rem;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+
+        .filter-section {
+            background: rgba(255,255,255,0.08);
+            padding: 1.5rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-label {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .filter-select {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: var(--light);
+            padding: 0.7rem;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .modules-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+
+        .module-card {
+            background: rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .module-card.featured {
+            border: 2px solid var(--accent);
+            background: linear-gradient(135deg, rgba(255,0,255,0.1), rgba(0,255,136,0.1));
+        }
+
+        .module-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(0,255,136,0.3);
+        }
+
+        .module-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            padding: 0.3rem 1rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .badge-new { background: var(--accent); color: white; }
+        .badge-popular { background: gold; color: black; }
+        .badge-featured { background: var(--primary); color: black; }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .module-icon {
+            font-size: 3rem;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,255,136,0.1);
+            border-radius: 20px;
+        }
+
+        .module-info {
+            flex: 1;
+        }
+
+        .module-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .module-category {
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+
+        .module-description {
+            color: rgba(255,255,255,0.8);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .module-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 0.8rem;
+            margin-bottom: 2rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .feature-icon {
+            color: var(--primary);
+        }
+
+        .module-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .stat-item {
+            background: rgba(255,255,255,0.05);
+            padding: 1rem;
+            border-radius: 10px;
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .module-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: space-between;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--dark);
+        }
+
+        .btn-primary:hover {
+            background: #00cc66;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,255,136,0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: var(--dark);
+        }
+
+        .btn-disabled {
+            background: rgba(255,255,255,0.2);
+            color: rgba(255,255,255,0.5);
+            cursor: not-allowed;
+        }
+
+        .price-section {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .module-price {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .price-period {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .access-level {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .level-premium { background: gold; color: black; }
+        .level-vip { background: var(--accent); color: white; }
+        .level-standard { background: var(--primary); color: black; }
+
+        .search-box {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 25px;
+            padding: 0.8rem 1.5rem;
+            color: var(--light);
+            width: 100%;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .main-container {
+                padding: 1rem;
+            }
+
+            .modules-container {
+                grid-template-columns: 1fr;
+            }
+
+            .module-features {
+                grid-template-columns: 1fr;
+            }
+
+            .module-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .module-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            🏆 Tetra Ecosystem
+        </div>
+        <div class="nav-links">
+            <a href="/dashboard" class="nav-link">🏠 داشبورد</a>
+            <a href="/modules" class="nav-link active">🏗️ ماژول‌ها</a>
+            <a href="/wallet" class="nav-link">💰 کیف پول</a>
+            <a href="#" class="nav-link" onclick="logout()">🚪 خروج</a>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="page-header">
+            <h1 class="page-title">فروشگاه ماژول‌های پیشرفته</h1>
+            <p class="page-subtitle">۱۲ ماژول تخصصی برای نیازهای حرفه‌ای شما</p>
+        </div>
+
+        <div class="filter-section">
+            <input type="text" class="search-box" placeholder="🔍 جستجو در ماژول‌ها..." id="searchInput">
+            <div class="filter-grid">
+                <div class="filter-group">
+                    <label class="filter-label">دسته‌بندی</label>
+                    <select class="filter-select" id="categoryFilter">
+                        <option value="all">همه دسته‌ها</option>
+                        <option value="ai">هوش مصنوعی</option>
+                        <option value="content">تولید محتوا</option>
+                        <option value="finance">مالی</option>
+                        <option value="security">امنیتی</option>
+                        <option value="analytics">تحلیل داده</option>
+                        <option value="trading">معامله‌گری</option>
+                        <option value="blockchain">بلاکچین</option>
+                        <option value="development">توسعه</option>
+                        <option value="visualization">نمایش داده</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">سطح دسترسی</label>
+                    <select class="filter-select" id="accessFilter">
+                        <option value="all">همه سطوح</option>
+                        <option value="standard">استاندارد</option>
+                        <option value="premium">پرمیوم</option>
+                        <option value="vip">VIP</option>
+                        <option value="developer">توسعه‌دهنده</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">وضعیت خرید</label>
+                    <select class="filter-select" id="purchaseFilter">
+                        <option value="all">همه</option>
+                        <option value="purchased">خریداری شده</option>
+                        <option value="not-purchased">خریداری نشده</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">مرتب‌سازی</label>
+                    <select class="filter-select" id="sortFilter">
+                        <option value="name">نام</option>
+                        <option value="price">قیمت</option>
+                        <option value="performance">عملکرد</option>
+                        <option value="popularity">محبوبیت</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="modules-container" id="modulesContainer">
+            <!-- ماژول‌ها در اینجا لود می‌شوند -->
+        </div>
+    </div>
+
+    <script>
+        const token = localStorage.getItem('tetra_token');
+        
+        if (!token) {
+            window.location.href = '/login';
+        }
+
+        let allModules = [];
+        let filteredModules = [];
+
+        async function loadModules() {
+            try {
+                const response = await fetch('/api/modules', {
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    allModules = data.modules;
+                    filteredModules = [...allModules];
+                    displayModules();
+                    setupFilters();
+                }
+            } catch (error) {
+                console.error('Error loading modules:', error);
+                showError('خطا در بارگذاری ماژول‌ها');
+            }
+        }
+
+        function displayModules() {
+            const container = document.getElementById('modulesContainer');
+            
+            if (filteredModules.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🔍</div>
+                        <h3>ماژولی یافت نشد</h3>
+                        <p>لطفاً فیلترهای جستجو را تغییر دهید</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filteredModules.map(module => createModuleCard(module)).join('');
+        }
+
+        function createModuleCard(module) {
+            const badge = getModuleBadge(module);
+            const accessLevel = getAccessLevelText(module.accessLevel);
+            const levelClass = getLevelClass(module.accessLevel);
+            const isFeatured = module.price > 5000;
+
+            return `
+                <div class="module-card ${isFeatured ? 'featured' : ''}">
+                    ${badge}
+                    <div class="module-header">
+                        <div class="module-icon">${getModuleIcon(module.id)}</div>
+                        <div class="module-info">
+                            <h3 class="module-title">${module.name}</h3>
+                            <div class="module-category">${getCategoryText(module.category)}</div>
+                            <span class="access-level ${levelClass}">${accessLevel}</span>
+                        </div>
+                    </div>
+                    
+                    <p class="module-description">${module.description}</p>
+                    
+                    <div class="module-features">
+                        ${module.features.map(feature => `
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                <span>${feature}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="module-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">${module.performance}%</div>
+                            <div class="stat-label">عملکرد</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${module.version}</div>
+                            <div class="stat-label">ورژن</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${module.instance?.statistics?.requests || 0}</div>
+                            <div class="stat-label">درخواست</div>
+                        </div>
+                    </div>
+
+                    <div class="price-section">
+                        <div class="module-price">${module.price.toLocaleString()} TETRA</div>
+                        <div class="price-period">یکبار خرید - دسترسی دائمی</div>
+                    </div>
+
+                    <div class="module-actions">
+                        ${module.isPurchased ? 
+                            `<button class="btn btn-primary" onclick="openModule('${module.id}')">
+                                🚀 اجرای ماژول
+                            </button>
+                            <button class="btn btn-outline" onclick="showModuleDetails('${module.id}')">
+                                📊 آمار استفاده
+                            </button>` :
+                            `<button class="btn btn-primary" onclick="purchaseModule('${module.id}')" 
+                                      ${!module.canAccess ? 'disabled' : ''}>
+                                🛒 خرید ماژول
+                            </button>
+                            <button class="btn btn-outline" onclick="showModuleDetails('${module.id}')">
+                                ℹ️ اطلاعات کامل
+                            </button>`
+                        }
+                    </div>
+                </div>
+            `;
+        }
+
+        function getModuleBadge(module) {
+            if (module.price > 8000) return `<span class="module-badge badge-featured">⭐ ویژه</span>`;
+            if (module.instance?.statistics?.requests > 1000) return `<span class="module-badge badge-popular">🔥 پرفروش</span>`;
+            if (module.version.includes('1.0')) return `<span class="module-badge badge-new">🆕 جدید</span>`;
+            return '';
+        }
+
+        function getModuleIcon(moduleId) {
+            const icons = {
+                'ai-quantum-core': '🤖',
+                'quantum-writer-pro': '📝',
+                'nlp-master': '🧠',
+                'quantum-wallet': '💼',
+                'security-shield': '🛡️',
+                'quantum-analytics': '📊',
+                'trading-master': '🤖',
+                'blockchain-explorer': '🔗',
+                'api-orchestrator': '⚙️',
+                'quantum-visualizer': '🔮',
+                'neural-network-pro': '🧠',
+                'crypto-vault': '💰'
+            };
+            return icons[moduleId] || '🏗️';
+        }
+
+        function getCategoryText(category) {
+            const categories = {
+                'ai': 'هوش مصنوعی',
+                'content': 'تولید محتوا',
+                'finance': 'مالی و کیف پول',
+                'security': 'امنیتی',
+                'analytics': 'تحلیل داده',
+                'trading': 'معامله‌گری',
+                'blockchain': 'بلاکچین',
+                'development': 'توسعه',
+                'visualization': 'نمایش داده'
+            };
+            return categories[category] || category;
+        }
+
+        function getAccessLevelText(accessLevel) {
+            const texts = {
+                'standard': 'استاندارد',
+                'premium': 'پرمیوم',
+                'vip': 'VIP',
+                'developer': 'توسعه‌دهنده'
+            };
+            return texts[accessLevel] || accessLevel;
+        }
+
+        function getLevelClass(accessLevel) {
+            const classes = {
+                'standard': 'level-standard',
+                'premium': 'level-premium',
+                'vip': 'level-vip',
+                'developer': 'level-vip'
+            };
+            return classes[accessLevel] || 'level-standard';
+        }
+
+        function setupFilters() {
+            const searchInput = document.getElementById('searchInput');
+            const categoryFilter = document.getElementById('categoryFilter');
+            const accessFilter = document.getElementById('accessFilter');
+            const purchaseFilter = document.getElementById('purchaseFilter');
+            const sortFilter = document.getElementById('sortFilter');
+
+            const filterHandler = () => {
+                filterModules();
+            };
+
+            searchInput.addEventListener('input', filterHandler);
+            categoryFilter.addEventListener('change', filterHandler);
+            accessFilter.addEventListener('change', filterHandler);
+            purchaseFilter.addEventListener('change', filterHandler);
+            sortFilter.addEventListener('change', filterHandler);
+        }
+
+        function filterModules() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const category = document.getElementById('categoryFilter').value;
+            const accessLevel = document.getElementById('accessFilter').value;
+            const purchaseStatus = document.getElementById('purchaseFilter').value;
+            const sortBy = document.getElementById('sortFilter').value;
+
+            filteredModules = allModules.filter(module => {
+                // فیلتر جستجو
+                const matchesSearch = module.name.toLowerCase().includes(searchTerm) ||
+                                   module.description.toLowerCase().includes(searchTerm) ||
+                                   module.features.some(f => f.toLowerCase().includes(searchTerm));
+
+                // فیلتر دسته‌بندی
+                const matchesCategory = category === 'all' || module.category === category;
+
+                // فیلتر سطح دسترسی
+                const matchesAccess = accessLevel === 'all' || module.accessLevel === accessLevel;
+
+                // فیلتر وضعیت خرید
+                const matchesPurchase = purchaseStatus === 'all' || 
+                                      (purchaseStatus === 'purchased' && module.isPurchased) ||
+                                      (purchaseStatus === 'not-purchased' && !module.isPurchased);
+
+                return matchesSearch && matchesCategory && matchesAccess && matchesPurchase;
+            });
+
+            // مرتب‌سازی
+            filteredModules.sort((a, b) => {
+                switch (sortBy) {
+                    case 'price':
+                        return b.price - a.price;
+                    case 'performance':
+                        return b.performance - a.performance;
+                    case 'popularity':
+                        return (b.instance?.statistics?.requests || 0) - (a.instance?.statistics?.requests || 0);
+                    default:
+                        return a.name.localeCompare(b.name);
+                }
+            });
+
+            displayModules();
+        }
+
+        async function purchaseModule(moduleId) {
+            try {
+                const response = await fetch(`/api/modules/${moduleId}/purchase`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showNotification(`ماژول با موفقیت خریداری شد!`, 'success');
+                    // رفرش لیست ماژول‌ها
+                    setTimeout(() => {
+                        loadModules();
+                    }, 1000);
+                } else {
+                    showNotification(data.error, 'error');
+                }
+            } catch (error) {
+                showNotification('خطا در خرید ماژول', 'error');
+            }
+        }
+
+        function openModule(moduleId) {
+            window.location.href = `/module/${moduleId}`;
+        }
+
+        function showModuleDetails(moduleId) {
+            // در اینجا می‌توانید modal یا صفحه جداگانه برای نمایش جزئیات ایجاد کنید
+            const module = allModules.find(m => m.id === moduleId);
+            if (module) {
+                alert(`جزئیات ماژول: ${module.name}\n\n${module.description}\n\nقیمت: ${module.price.toLocaleString()} TETRA\nعملکرد: ${module.performance}%`);
+            }
+        }
+
+        function showNotification(message, type = 'info') {
+            // پیاده‌سازی ساده نوتیفیکیشن
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: ${type === 'error' ? '#ff4444' : '#00ff88'};
+                color: ${type === 'error' ? 'white' : 'black'};
+                padding: 1rem 1.5rem;
+                border-radius: 10px;
+                z-index: 10000;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 3000);
+        }
+
+        function showError(message) {
+            showNotification(message, 'error');
+        }
+
+        function logout() {
+            localStorage.removeItem('tetra_token');
+            window.location.href = '/login';
+        }
+
+        // بارگذاری اولیه
+        document.addEventListener('DOMContentLoaded', loadModules);
+    </script>
+</body>
+</html>

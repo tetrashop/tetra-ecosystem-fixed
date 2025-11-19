@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📝 ثبت نام در Tetra Ecosystem</title>
+    <style>
+        :root {
+            --primary: #00ff88;
+            --secondary: #302b63;
+            --dark: #0f0c29;
+            --light: #ffffff;
+            --accent: #ff00ff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: linear-gradient(135deg, var(--dark), var(--secondary));
+            color: var(--light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .register-container {
+            background: rgba(255,255,255,0.08);
+            padding: 3rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(20px);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .title {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            opacity: 0.8;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: right;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 10px;
+            color: var(--light);
+            font-size: 1rem;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary);
+            color: var(--dark);
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #00cc66;
+            transform: translateY(-2px);
+        }
+
+        .links {
+            margin-top: 1.5rem;
+        }
+
+        .link {
+            color: var(--primary);
+            text-decoration: none;
+            display: block;
+            margin: 0.5rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="logo">🏆</div>
+        <h1 class="title">ثبت نام</h1>
+        <p class="subtitle">ایجاد حساب کاربری جدید</p>
+
+        <form id="registerForm">
+            <div class="form-group">
+                <label class="form-label">نام کاربری</label>
+                <input type="text" class="form-input" id="username" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">آدرس ایمیل</label>
+                <input type="email" class="form-input" id="email" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">رمز عبور</label>
+                <input type="password" class="form-input" id="password" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">تکرار رمز عبور</label>
+                <input type="password" class="form-input" id="confirmPassword" required>
+            </div>
+
+            <button type="submit" class="btn">📝 ایجاد حساب</button>
+        </form>
+
+        <div class="links">
+            <a href="/login" class="link">🔐 ورود به حساب موجود</a>
+            <a href="/" class="link">🏠 صفحه اصلی</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (password !== confirmPassword) {
+                alert('رمز عبور و تکرار آن مطابقت ندارند');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, email, password })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('حساب کاربری با موفقیت ایجاد شد');
+                    window.location.href = '/login';
+                } else {
+                    alert('خطا: ' + data.error);
+                }
+            } catch (error) {
+                alert('خطا در ارتباط با سرور');
+            }
+        });
+    </script>
+</body>
+</html>

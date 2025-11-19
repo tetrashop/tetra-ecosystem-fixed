@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>👑 پنل مدیریت - Tetra Ecosystem</title>
+    <style>
+        :root {
+            --primary: #00ff88;
+            --secondary: #302b63;
+            --dark: #0f0c29;
+            --light: #ffffff;
+            --accent: #ff00ff;
+            --warning: #ffaa00;
+            --danger: #ff4444;
+            --info: #00ccff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: linear-gradient(135deg, var(--dark), var(--secondary));
+            color: var(--light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-link {
+            color: var(--light);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link.active {
+            background: var(--primary);
+            color: var(--dark);
+            font-weight: bold;
+        }
+
+        .admin-header {
+            background: linear-gradient(135deg, rgba(255,0,255,0.1), rgba(0,255,136,0.1));
+            padding: 3rem 2rem;
+            text-align: center;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .admin-title {
+            font-size: 3rem;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .admin-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .admin-container {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .tabs-container {
+            background: rgba(255,255,255,0.08);
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .tabs-header {
+            display: flex;
+            background: rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 1.5rem 2rem;
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tab-button::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .tab-button.active {
+            background: rgba(255,255,255,0.1);
+            color: var(--primary);
+        }
+
+        .tab-button.active::before {
+            transform: scaleX(1);
+        }
+
+        .tab-button:hover:not(.active) {
+            background: rgba(255,255,255,0.05);
+            color: var(--accent);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 2rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.08);
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 25px rgba(0,255,136,0.2);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        .data-table {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 2rem;
+        }
+
+        .table-header {
+            background: rgba(255,255,255,0.1);
+            padding: 1.5rem;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+        }
+
+        .table-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .table-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--dark);
+        }
+
+        .btn-primary:hover {
+            background: #00cc66;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,255,136,0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: var(--dark);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #cc3333;
+            transform: translateY(-2px);
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: right;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        th {
+            background: rgba(255,255,255,0.1);
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        tr:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .status-active { background: var(--primary); color: var(--dark); }
+        .status-inactive { background: var(--danger); color: white; }
+        .status-pending { background: var(--warning); color: black; }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--dark);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-small {
+            padding: 0.3rem 0.8rem;
+            font-size: 0.8rem;
+        }
+
+        .module-performance {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .performance-bar {
+            flex: 1;
+            height: 6px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .performance-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), #00cc66);
+            border-radius: 3px;
+        }
+
+        .system-health {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .health-card {
+            background: rgba(255,255,255,0.08);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .health-title {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .health-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .health-good { color: var(--primary); }
+        .health-warning { color: var(--warning); }
+        .health-critical { color: var(--danger); }
+
+        .log-container {
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            padding: 1rem;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        .log-entry {
+            padding: 0.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .log-error { color: var(--danger); }
+        .log-warning { color: var(--warning); }
+        .log-info { color: var(--info); }
+        .log-success { color: var(--primary); }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--dark);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 2px solid var(--accent);
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 10px;
+            color: var(--light);
+            font-size: 1rem;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .admin-container {
+                padding: 1rem;
+            }
+
+            .tabs-header {
+                flex-direction: column;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .system-health {
+                grid-template-columns: 1fr;
+            }
+
+            .table-container {
+                overflow-x: auto;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+
+        .search-box {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 25px;
+            padding: 0.8rem 1.5rem;
+            color: var(--light);
+            width: 100%;
+            margin-bottom: 1rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .page-button {
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            border-radius: 10px;
+            color: var(--light);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .page-button.active {
+            background: var(--primary);
+            color: var(--dark);
+        }
+
+        .page-button:hover:not(.active) {
+            background: rgba(255,255,255,0.2);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            🏆 Tetra Ecosystem
+        </div>
+        <div class="nav-links">
+            <a href="/dashboard" class="nav-link">🏠 داشبورد</a>
+            <a href="/modules" class="nav-link">🏗️ ماژول‌ها</a>
+            <a href="/wallet" class="nav-link">💰 کیف پول</a>
+            <a href="/admin" class="nav-link active">👑 مدیریت</a>
+            <a href="#" class="nav-link" onclick="logout()">🚪 خروج</a>
+        </div>
+    </nav>
+
+    <div class="admin-header">
+        <h1 class="admin-title">پنل مدیریت ارشد</h1>
+        <p class="admin-subtitle">مدیریت کامل سیستم و کاربران - دسترسی سطح سوپرادمین</p>
+    </div>
+
+    <div class="admin-container">
+        <div class="tabs-container">
+            <div class="tabs-header">
+                <button class="tab-button active" onclick="showTab('users')">
+                    👥 مدیریت کاربران
+                </button>
+                <button class="tab-button" onclick="showTab('modules')">
+                    🏗️ مدیریت ماژول‌ها
+                </button>
+                <button class="tab-button" onclick="showTab('system')">
+                    ⚙️ وضعیت سیستم
+                </button>
+            </div>
+
+            <!-- تب مدیریت کاربران -->
+            <div id="users-tab" class="tab-content active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-value" id="totalUsers">0</div>
+                        <div class="stat-label">کاربران کل</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🟢</div>
+                        <div class="stat-value" id="activeUsers">0</div>
+                        <div class="stat-label">کاربران فعال</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">👑</div>
+                        <div class="stat-value" id="adminUsers">0</div>
+                        <div class="stat-label">مدیران سیستم</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-value" id="totalRevenue">0</div>
+                        <div class="stat-label">درآمد کل (TETRA)</div>
+                    </div>
+                </div>
+
+                <div class="data-table">
+                    <div class="table-header">
+                        <h3 class="table-title">لیست کاربران سیستم</h3>
+                        <div class="table-actions">
+                            <button class="btn btn-primary" onclick="showAddUserModal()">
+                                ➕ کاربر جدید
+                            </button>
+                            <button class="btn btn-outline" onclick="exportUsers()">
+                                📊 خروجی Excel
+                            </button>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <input type="text" class="search-box" placeholder="🔍 جستجو در کاربران..." id="userSearch">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>کاربر</th>
+                                    <th>ایمیل</th>
+                                    <th>نقش</th>
+                                    <th>عضویت</th>
+                                    <th>آخرین ورود</th>
+                                    <th>وضعیت</th>
+                                    <th>اقدامات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTableBody">
+                                <!-- داده‌های کاربران在这里加载 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- تب مدیریت ماژول‌ها -->
+            <div id="modules-tab" class="tab-content">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">🏗️</div>
+                        <div class="stat-value" id="totalModules">0</div>
+                        <div class="stat-label">ماژول‌های کل</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🟢</div>
+                        <div class="stat-value" id="activeModules">0</div>
+                        <div class="stat-label">ماژول‌های فعال</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📊</div>
+                        <div class="stat-value" id="totalRequests">0</div>
+                        <div class="stat-label">درخواست‌های کل</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-value" id="moduleRevenue">0</div>
+                        <div class="stat-label">درآمد ماژول‌ها</div>
+                    </div>
+                </div>
+
+                <div class="data-table">
+                    <div class="table-header">
+                        <h3 class="table-title">مدیریت ماژول‌های سیستم</h3>
+                        <div class="table-actions">
+                            <button class="btn btn-primary" onclick="showAddModuleModal()">
+                                ➕ ماژول جدید
+                            </button>
+                            <button class="btn btn-outline" onclick="refreshModules()">
+                                🔄 بروزرسانی
+                            </button>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ماژول</th>
+                                    <th>دسته‌بندی</th>
+                                    <th>عملکرد</th>
+                                    <th>درخواست‌ها</th>
+                                    <th>قیمت</th>
+                                    <th>وضعیت</th>
+                                    <th>اقدامات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="modulesTableBody">
+                                <!-- داده‌های ماژول‌ها在这里加载 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- تب وضعیت سیستم -->
+            <div id="system-tab" class="tab-content">
+                <div class="system-health">
+                    <div class="health-card">
+                        <h3 class="health-title">💾 وضعیت حافظه</h3>
+                        <div class="health-value health-good" id="memoryUsage">0%</div>
+                        <div class="performance-bar">
+                            <div class="performance-fill" id="memoryBar" style="width: 0%"></div>
+                        </div>
+                        <p>مصرف حافظه سیستم</p>
+                    </div>
+                    <div class="health-card">
+                        <h3 class="health-title">⚡ عملکرد CPU</h3>
+                        <div class="health-value health-good" id="cpuUsage">0%</div>
+                        <div class="performance-bar">
+                            <div class="performance-fill" id="cpuBar" style="width: 0%"></div>
+                        </div>
+                        <p>مصرف پردازنده</p>
+                    </div>
+                    <div class="health-card">
+                        <h3 class="health-title">🕒 آپتایم سیستم</h3>
+                        <div class="health-value health-good" id="systemUptime">0</div>
+                        <p>زمان فعالیت سیستم</p>
+                    </div>
+                    <div class="health-card">
+                        <h3 class="health-title">🔗 اتصالات فعال</h3>
+                        <div class="health-value health-good" id="activeConnections">0</div>
+                        <p>اتصالات همزمان</p>
+                    </div>
+                </div>
+
+                <div class="data-table">
+                    <div class="table-header">
+                        <h3 class="table-title">📊 لاگ‌های سیستم</h3>
+                        <div class="table-actions">
+                            <button class="btn btn-outline" onclick="loadSystemLogs()">
+                                🔄 بروزرسانی لاگ‌ها
+                            </button>
+                            <button class="btn btn-danger" onclick="clearLogs()">
+                                🗑️ پاک کردن لاگ‌ها
+                            </button>
+                        </div>
+                    </div>
+                    <div class="log-container" id="systemLogs">
+                        <!-- لاگ‌های سیستم在这里加载 -->
+                    </div>
+                </div>
+
+                <div class="data-table" style="margin-top: 2rem;">
+                    <div class="table-header">
+                        <h3 class="table-title">🛡️ رویدادهای امنیتی</h3>
+                    </div>
+                    <div class="log-container" id="securityLogs">
+                        <!-- رویدادهای امنیتی在这里加载 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- مودال افزودن کاربر -->
+    <div id="addUserModal" class="modal">
+        <div class="modal-content">
+            <h3 class="modal-title">➕ افزودن کاربر جدید</h3>
+            <div class="form-group">
+                <label class="form-label">نام کاربری</label>
+                <input type="text" class="form-input" id="newUsername" placeholder="Username">
+            </div>
+            <div class="form-group">
+                <label class="form-label">آدرس ایمیل</label>
+                <input type="email" class="form-input" id="newEmail" placeholder="Email">
+            </div>
+            <div class="form-group">
+                <label class="form-label">رمز عبور</label>
+                <input type="password" class="form-input" id="newPassword" placeholder="Password">
+            </div>
+            <div class="form-group">
+                <label class="form-label">نقش کاربر</label>
+                <select class="form-input" id="newUserRole">
+                    <option value="user">کاربر عادی</option>
+                    <option value="premium_user">کاربر پرمیوم</option>
+                    <option value="vip_user">کاربر VIP</option>
+                    <option value="developer">توسعه‌دهنده</option>
+                </select>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-outline" onclick="closeModal('addUserModal')">لغو</button>
+                <button class="btn btn-primary" onclick="addNewUser()">ایجاد کاربر</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- مودال افزودن ماژول -->
+    <div id="addModuleModal" class="modal">
+        <div class="modal-content">
+            <h3 class="modal-title">➕ افزودن ماژول جدید</h3>
+            <div class="form-group">
+                <label class="form-label">نام ماژول</label>
+                <input type="text" class="form-input" id="newModuleName" placeholder="Module Name">
+            </div>
+            <div class="form-group">
+                <label class="form-label">توضیحات</label>
+                <textarea class="form-input" id="newModuleDesc" placeholder="Description" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <label class="form-label">دسته‌بندی</label>
+                <select class="form-input" id="newModuleCategory">
+                    <option value="ai">هوش مصنوعی</option>
+                    <option value="content">تولید محتوا</option>
+                    <option value="finance">مالی</option>
+                    <option value="security">امنیتی</option>
+                    <option value="analytics">تحلیل داده</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">قیمت (TETRA)</label>
+                <input type="number" class="form-input" id="newModulePrice" placeholder="1000">
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-outline" onclick="closeModal('addModuleModal')">لغو</button>
+                <button class="btn btn-primary" onclick="addNewModule()">ایجاد ماژول</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const token = localStorage.getItem('tetra_token');
+        
+        if (!token) {
+            window.location.href = '/login';
+        }
+
+        let currentUser = null;
+        let usersData = [];
+        let modulesData = [];
+        let systemStats = {};
+
+        // بررسی دسترسی ادمین
+        async function checkAdminAccess() {
+            try {
+                const response = await fetch('/api/auth/verify', {
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success && data.user.role === 'super_admin') {
+                    currentUser = data.user;
+                    loadAdminData();
+                } else {
+                    window.location.href = '/dashboard';
+                }
+            } catch (error) {
+                window.location.href = '/login';
+            }
+        }
+
+        async function loadAdminData() {
+            await loadUsers();
+            await loadModules();
+            await loadSystemStats();
+            loadSystemLogs();
+            loadSecurityLogs();
+        }
+
+        function showTab(tabName) {
+            // مخفی کردن تمام تب‌ها
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // نمایش تب انتخاب شده
+            document.getElementById(tabName + '-tab').classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        async function loadUsers() {
+            try {
+                const response = await fetch('/api/admin/users', {
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    usersData = data.users;
+                    updateUsersDisplay();
+                }
+            } catch (error) {
+                console.error('Error loading users:', error);
+                showNotification('خطا در بارگذاری کاربران', 'error');
+            }
+        }
+
+        function updateUsersDisplay() {
+            // آپدیت آمار
+            document.getElementById('totalUsers').textContent = usersData.length;
+            document.getElementById('activeUsers').textContent = usersData.filter(u => u.isOnline).length;
+            document.getElementById('adminUsers').textContent = usersData.filter(u => u.role === 'super_admin').length;
+            
+            // محاسبه درآمد کل
+            const totalRevenue = usersData.reduce((sum, user) => {
+                // شبیه‌سازی درآمد - در واقعیت باید از دیتابیس بخوانید
+                return sum + (user.purchasedModules * 1000);
+            }, 0);
+            document.getElementById('totalRevenue').textContent = totalRevenue.toLocaleString();
+
+            // نمایش جدول کاربران
+            const tbody = document.getElementById('usersTableBody');
+            tbody.innerHTML = usersData.map(user => `
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div class="user-avatar">${user.username.charAt(0).toUpperCase()}</div>
+                            <div>
+                                <div style="font-weight: bold;">${user.username}</div>
+                                <div style="font-size: 0.8rem; opacity: 0.7;">${user.id}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${user.email}</td>
+                    <td>
+                        <span class="status-badge ${getRoleClass(user.role)}">
+                            ${getRoleText(user.role)}
+                        </span>
+                    </td>
+                    <td>${new Date(user.createdAt).toLocaleDateString('fa-IR')}</td>
+                    <td>${user.lastLogin ? new Date(user.lastLogin).toLocaleString('fa-IR') : '---'}</td>
+                    <td>
+                        <span class="status-badge ${user.isOnline ? 'status-active' : 'status-inactive'}">
+                            ${user.isOnline ? '🟢 آنلاین' : '🔴 آفلاین'}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-outline btn-small" onclick="editUser('${user.id}')">
+                                ✏️ ویرایش
+                            </button>
+                            <button class="btn btn-danger btn-small" onclick="deleteUser('${user.id}')">
+                                🗑️ حذف
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function getRoleClass(role) {
+            const classes = {
+                'user': 'status-pending',
+                'premium_user': 'status-active',
+                'vip_user': 'status-active',
+                'developer': 'status-active',
+                'super_admin': 'status-active'
+            };
+            return classes[role] || 'status-pending';
+        }
+
+        function getRoleText(role) {
+            const texts = {
+                'user': 'کاربر عادی',
+                'premium_user': 'پرمیوم',
+                'vip_user': 'VIP',
+                'developer': 'توسعه‌دهنده',
+                'super_admin': 'مدیر ارشد'
+            };
+            return texts[role] || role;
+        }
+
+        async function loadModules() {
+            try {
+                const response = await fetch('/api/admin/modules', {
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    modulesData = data.modules;
+                    updateModulesDisplay();
+                }
+            } catch (error) {
+                console.error('Error loading modules:', error);
+                showNotification('خطا در بارگذاری ماژول‌ها', 'error');
+            }
+        }
+
+        function updateModulesDisplay() {
+            // آپدیت آمار
+            document.getElementById('totalModules').textContent = modulesData.length;
+            document.getElementById('activeModules').textContent = modulesData.filter(m => m.status === 'active').length;
+            
+            const totalRequests = modulesData.reduce((sum, module) => {
+                return sum + (module.instance?.statistics?.requests || 0);
+            }, 0);
+            document.getElementById('totalRequests').textContent = totalRequests.toLocaleString();
+
+            const moduleRevenue = modulesData.reduce((sum, module) => {
+                return sum + (module.price * 10); // شبیه‌سازی درآمد
+            }, 0);
+            document.getElementById('moduleRevenue').textContent = moduleRevenue.toLocaleString();
+
+            // نمایش جدول ماژول‌ها
+            const tbody = document.getElementById('modulesTableBody');
+            tbody.innerHTML = modulesData.map(module => `
+                <tr>
+                    <td>
+                        <div style="font-weight: bold;">${module.name}</div>
+                        <div style="font-size: 0.8rem; opacity: 0.7;">${module.description}</div>
+                    </td>
+                    <td>${getCategoryText(module.category)}</td>
+                    <td>
+                        <div class="module-performance">
+                            <span>${module.performance}%</span>
+                            <div class="performance-bar">
+                                <div class="performance-fill" style="width: ${module.performance}%"></div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${module.instance?.statistics?.requests || 0}</td>
+                    <td>${module.price.toLocaleString()} TETRA</td>
+                    <td>
+                        <span class="status-badge ${module.status === 'active' ? 'status-active' : 'status-inactive'}">
+                            ${module.status === 'active' ? 'فعال' : 'غیرفعال'}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-outline btn-small" onclick="editModule('${module.id}')">
+                                ✏️ ویرایش
+                            </button>
+                            <button class="btn btn-danger btn-small" onclick="toggleModule('${module.id}')">
+                                ${module.status === 'active' ? '⏸️ غیرفعال' : '▶️ فعال'}
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function getCategoryText(category) {
+            const categories = {
+                'ai': 'هوش مصنوعی',
+                'content': 'تولید محتوا',
+                'finance': 'مالی',
+                'security': 'امنیتی',
+                'analytics': 'تحلیل داده',
+                'trading': 'معامله‌گری',
+                'blockchain': 'بلاکچین',
+                'development': 'توسعه',
+                'visualization': 'نمایش داده'
+            };
+            return categories[category] || category;
+        }
+
+        async function loadSystemStats() {
+            try {
+                const response = await fetch('/api/admin/stats', {
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    systemStats = data.stats;
+                    updateSystemDisplay();
+                }
+            } catch (error) {
+                console.error('Error loading system stats:', error);
+            }
+        }
+
+        function updateSystemDisplay() {
+            // شبیه‌سازی داده‌های سیستم
+            const memoryUsage = Math.min(80, (systemStats.memoryUsage?.heapUsed / systemStats.memoryUsage?.heapTotal * 100) || 45);
+            const cpuUsage = 35; // شبیه‌سازی
+            const activeConnections = systemStats.activeSessions || 0;
+
+            document.getElementById('memoryUsage').textContent = memoryUsage.toFixed(1) + '%';
+            document.getElementById('memoryBar').style.width = memoryUsage + '%';
+            document.getElementById('cpuUsage').textContent = cpuUsage + '%';
+            document.getElementById('cpuBar').style.width = cpuUsage + '%';
+            document.getElementById('systemUptime').textContent = formatUptime(systemStats.systemUptime || 0);
+            document.getElementById('activeConnections').textContent = activeConnections;
+
+            // آپدیت رنگ وضعیت
+            updateHealthColor('memoryUsage', memoryUsage);
+            updateHealthColor('cpuUsage', cpuUsage);
+        }
+
+        function formatUptime(seconds) {
+            const days = Math.floor(seconds / 86400);
+            const hours = Math.floor((seconds % 86400) / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            
+            if (days > 0) return `${days} روز و ${hours} ساعت`;
+            if (hours > 0) return `${hours} ساعت و ${minutes} دقیقه`;
+            return `${minutes} دقیقه`;
+        }
+
+        function updateHealthColor(elementId, value) {
+            const element = document.getElementById(elementId);
+            element.className = 'health-value ';
+            
+            if (value < 70) element.classList.add('health-good');
+            else if (value < 85) element.classList.add('health-warning');
+            else element.classList.add('health-critical');
+        }
+
+        async function loadSystemLogs() {
+            try {
+                const response = await fetch('/api/admin/logs?type=system&limit=50', {
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    const logsContainer = document.getElementById('systemLogs');
+                    logsContainer.innerHTML = data.logs.map(log => `
+                        <div class="log-entry ${getLogLevel(log)}">
+                            ${log}
+                        </div>
+                    `).join('');
+                    logsContainer.scrollTop = logsContainer.scrollHeight;
+                }
+            } catch (error) {
+                console.error('Error loading system logs:', error);
+            }
+        }
+
+        async function loadSecurityLogs() {
+            try {
+                const response = await fetch('/api/security/events?limit=30', {
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    const logsContainer = document.getElementById('securityLogs');
+                    logsContainer.innerHTML = data.events.map(event => `
+                        <div class="log-entry log-warning">
+                            ${event}
+                        </div>
+                    `).join('');
+                    logsContainer.scrollTop = logsContainer.scrollHeight;
+                }
+            } catch (error) {
+                console.error('Error loading security logs:', error);
+            }
+        }
+
+        function getLogLevel(log) {
+            if (log.includes('ERROR') || log.includes('error')) return 'log-error';
+            if (log.includes('WARN') || log.includes('warning')) return 'log-warning';
+            if (log.includes('SUCCESS') || log.includes('success')) return 'log-success';
+            return 'log-info';
+        }
+
+        function showAddUserModal() {
+            document.getElementById('addUserModal').style.display = 'flex';
+        }
+
+        function showAddModuleModal() {
+            document.getElementById('addModuleModal').style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        async function addNewUser() {
+            const username = document.getElementById('newUsername').value;
+            const email = document.getElementById('newEmail').value;
+            const password = document.getElementById('newPassword').value;
+            const role = document.getElementById('newUserRole').value;
+
+            if (!username || !email || !password) {
+                showNotification('لطفاً تمام فیلدها را پر کنید', 'error');
+                return;
+            }
+
+            try {
+                // شبیه‌سازی ایجاد کاربر - در واقعیت باید API مربوطه را فراخوانی کنید
+                showNotification(`کاربر ${username} با موفقیت ایجاد شد`, 'success');
+                closeModal('addUserModal');
+                
+                // پاک کردن فیلدها
+                document.getElementById('newUsername').value = '';
+                document.getElementById('newEmail').value = '';
+                document.getElementById('newPassword').value = '';
+                
+                // رفرش لیست کاربران
+                setTimeout(() => {
+                    loadUsers();
+                }, 1000);
+            } catch (error) {
+                showNotification('خطا در ایجاد کاربر', 'error');
+            }
+        }
+
+        async function addNewModule() {
+            const name = document.getElementById('newModuleName').value;
+            const description = document.getElementById('newModuleDesc').value;
+            const category = document.getElementById('newModuleCategory').value;
+            const price = document.getElementById('newModulePrice').value;
+
+            if (!name || !description || !price) {
+                showNotification('لطفاً تمام فیلدها را پر کنید', 'error');
+                return;
+            }
+
+            try {
+                // شبیه‌سازی ایجاد ماژول
+                showNotification(`ماژول ${name} با موفقیت ایجاد شد`, 'success');
+                closeModal('addModuleModal');
+                
+                // پاک کردن فیلدها
+                document.getElementById('newModuleName').value = '';
+                document.getElementById('newModuleDesc').value = '';
+                document.getElementById('newModulePrice').value = '';
+                
+                // رفرش لیست ماژول‌ها
+                setTimeout(() => {
+                    loadModules();
+                }, 1000);
+            } catch (error) {
+                showNotification('خطا در ایجاد ماژول', 'error');
+            }
+        }
+
+        function editUser(userId) {
+            const user = usersData.find(u => u.id === userId);
+            if (user) {
+                showNotification(`ویرایش کاربر: ${user.username}`, 'info');
+                // در اینجا می‌توانید مودال ویرایش کاربر را باز کنید
+            }
+        }
+
+        function deleteUser(userId) {
+            const user = usersData.find(u => u.id === userId);
+            if (user && confirm(`آیا از حذف کاربر "${user.username}" اطمینان دارید؟`)) {
+                showNotification(`کاربر ${user.username} حذف شد`, 'success');
+                // در اینجا می‌توانید API حذف کاربر را فراخوانی کنید
+            }
+        }
+
+        function editModule(moduleId) {
+            const module = modulesData.find(m => m.id === moduleId);
+            if (module) {
+                showNotification(`ویرایش ماژول: ${module.name}`, 'info');
+                // در اینجا می‌توانید مودال ویرایش ماژول را باز کنید
+            }
+        }
+
+        function toggleModule(moduleId) {
+            const module = modulesData.find(m => m.id === moduleId);
+            if (module) {
+                const newStatus = module.status === 'active' ? 'inactive' : 'active';
+                showNotification(`ماژول ${module.name} ${newStatus === 'active' ? 'فعال' : 'غیرفعال'} شد`, 'success');
+                // در اینجا می‌توانید API تغییر وضعیت ماژول را فراخوانی کنید
+            }
+        }
+
+        function refreshModules() {
+            loadModules();
+            showNotification('ماژول‌ها با موفقیت بروزرسانی شدند', 'success');
+        }
+
+        function exportUsers() {
+            showNotification('خروجی Excel در حال آماده‌سازی است...', 'info');
+            // در اینجا می‌توانید قابلیت export به Excel را پیاده‌سازی کنید
+        }
+
+        function clearLogs() {
+            if (confirm('آیا از پاک کردن تمام لاگ‌های سیستم اطمینان دارید؟')) {
+                showNotification('لاگ‌های سیستم پاک شدند', 'success');
+                document.getElementById('systemLogs').innerHTML = '';
+                document.getElementById('securityLogs').innerHTML = '';
+            }
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: ${type === 'error' ? 'var(--danger)' : 
+                           type === 'success' ? 'var(--success)' : 
+                           type === 'warning' ? 'var(--warning)' : 'var(--info)'};
+                color: ${type === 'error' || type === 'info' ? 'white' : 'black'};
+                padding: 1rem 1.5rem;
+                border-radius: 10px;
+                z-index: 10000;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        function logout() {
+            localStorage.removeItem('tetra_token');
+            window.location.href = '/login';
+        }
+
+        // اضافه کردن استایل برای انیمیشن
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // بارگذاری اولیه
+        document.addEventListener('DOMContentLoaded', checkAdminAccess);
+
+        // بروزرسانی خودکار هر 30 ثانیه
+        setInterval(() => {
+            loadSystemStats();
+            loadSystemLogs();
+            loadSecurityLogs();
+        }, 30000);
+    </script>
+</body>
+</html>

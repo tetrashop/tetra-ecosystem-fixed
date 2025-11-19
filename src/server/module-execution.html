@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 اجرای ماژول - Tetra Ecosystem</title>
+    <style>
+        :root {
+            --primary: #00ff88;
+            --secondary: #302b63;
+            --dark: #0f0c29;
+            --light: #ffffff;
+            --accent: #ff00ff;
+            --warning: #ffaa00;
+            --danger: #ff4444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: linear-gradient(135deg, var(--dark), var(--secondary));
+            color: var(--light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-link {
+            color: var(--light);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link.active {
+            background: var(--primary);
+            color: var(--dark);
+            font-weight: bold;
+        }
+
+        .module-header {
+            background: linear-gradient(135deg, rgba(0,255,136,0.1), rgba(255,0,255,0.1));
+            padding: 3rem 2rem;
+            text-align: center;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .module-title {
+            font-size: 3rem;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .module-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+
+        .module-container {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .module-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+            min-height: 600px;
+        }
+
+        .module-sidebar {
+            background: rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .module-info {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .module-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .module-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .module-version {
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+
+        .module-stats {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-item {
+            background: rgba(255,255,255,0.05);
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--dark);
+        }
+
+        .btn-primary:hover {
+            background: #00cc66;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,255,136,0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: var(--dark);
+        }
+
+        .module-content {
+            background: rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .content-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding-bottom: 1rem;
+        }
+
+        .content-tab {
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            color: var(--light);
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .content-tab.active {
+            background: var(--primary);
+            color: var(--dark);
+        }
+
+        .content-tab:hover:not(.active) {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .tab-panel {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .execution-form {
+            background: rgba(255,255,255,0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .form-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 10px;
+            color: var(--light);
+            font-size: 1rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .results-container {
+            background: rgba(255,255,255,0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-top: 2rem;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .results-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .execution-info {
+            display: flex;
+            gap: 2rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .results-content {
+            background: rgba(0,0,0,0.3);
+            padding: 1.5rem;
+            border-radius: 10px;
+            min-height: 200px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .history-item {
+            background: rgba(255,255,255,0.05);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .history-time {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-bottom: 0.5rem;
+        }
+
+        .history-action {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .history-result {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        .docs-content {
+            line-height: 1.8;
+        }
+
+        .docs-section {
+            margin-bottom: 2rem;
+        }
+
+        .docs-title {
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .code-block {
+            background: rgba(0,0,0,0.3);
+            padding: 1rem;
+            border-radius: 10px;
+            font-family: monospace;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .feature-item {
+            background: rgba(255,255,255,0.05);
+            padding: 1rem;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .feature-icon {
+            color: var(--primary);
+        }
+
+        .loading-spinner {
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top: 3px solid var(--primary);
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .success-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(0,255,136,0.2);
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .module-container {
+                padding: 1rem;
+            }
+
+            .module-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .content-tabs {
+                flex-wrap: wrap;
+            }
+
+            .feature-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            🏆 Tetra Ecosystem
+        </div>
+        <div class="nav-links">
+            <a href="/dashboard" class="nav-link">🏠 داشبورد</a>
+            <a href="/modules" class="nav-link">🏗️ ماژول‌ها</a>
+            <a href="/wallet" class="nav-link">💰 کیف پول</a>
+            <a href="#" class="nav-link" onclick="logout()">🚪 خروج</a>
+        </div>
+    </nav>
+
+    <div class="module-header">
+        <h1 class="module-title" id="moduleTitle">در حال بارگذاری...</h1>
+        <p class="module-subtitle" id="moduleDescription">ماژول پیشرفته سیستم</p>
+        <div class="module-version" id="moduleVersion">ورژن: بارگذاری...</div>
+    </div>
+
+    <div class="module-container">
+        <div class="module-layout">
+            <!-- سایدبار ماژول -->
+            <div class="module-sidebar">
+                <div class="module-info">
+                    <div class="module-icon" id="moduleIcon">🏗️</div>
+                    <div class="module-name" id="sidebarModuleName">ماژول</div>
+                    <div class="module-version" id="sidebarVersion">ورژن: -</div>
+                </div>
+
+                <div class="module-stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="statPerformance">0%</div>
+                        <div class="stat-label">عملکرد</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="statRequests">0</div>
+                        <div class="stat-label">درخواست‌ها</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="statUptime">100%</div>
+                        <div class="stat-label">آپتایم</div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="executeModule()">
+                        🚀 اجرای ماژول
+                    </button>
+                    <button class="btn btn-outline" onclick="showTab('history')">
+                        📊 تاریخچه اجرا
+                    </button>
+                    <button class="btn btn-outline" onclick="showTab('docs')">
+                        📚 مستندات
+                    </button>
+                </div>
+
+                <div class="success-badge" id="purchaseBadge" style="display: none;">
+                    ✅ ماژول خریداری شده
+                </div>
+            </div>
+
+            <!-- محتوای اصلی -->
+            <div class="module-content">
+                <div class="content-tabs">
+                    <button class="content-tab active" onclick="showContentTab('execute')">
+                        ⚡ اجرا
+                    </button>
+                    <button class="content-tab" onclick="showContentTab('history')">
+                        📋 تاریخچه
+                    </button>
+                    <button class="content-tab" onclick="showContentTab('docs')">
+                        📖 مستندات
+                    </button>
+                    <button class="content-tab" onclick="showContentTab('settings')">
+                        ⚙️ تنظیمات
+                    </button>
+                </div>
+
+                <!-- تب اجرا -->
+                <div id="execute-tab" class="tab-panel active">
+                    <div class="execution-form">
+                        <h3 class="form-title">پارامترهای اجرای ماژول</h3>
+                        <form id="executionForm">
+                            <div class="form-group">
+                                <label class="form-label">نوع عملیات</label>
+                                <select class="form-select" id="operationType">
+                                    <option value="analyze">تحلیل داده</option>
+                                    <option value="process">پردازش</option>
+                                    <option value="generate">تولید محتوا</option>
+                                    <option value="optimize">بهینه‌سازی</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">داده ورودی</label>
+                                <textarea class="form-textarea" id="inputData" placeholder="داده‌های خود را وارد کنید..."></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">تنظیمات پیشرفته</label>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                    <div>
+                                        <label style="font-size: 0.9rem; display: block; margin-bottom: 0.5rem;">سطح دقت</label>
+                                        <select class="form-select" id="precisionLevel">
+                                            <option value="low">پایین</option>
+                                            <option value="medium" selected>متوسط</option>
+                                            <option value="high">بالا</option>
+                                            <option value="max">حداکثر</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label style="font-size: 0.9rem; display: block; margin-bottom: 0.5rem;">سرعت پردازش</label>
+                                        <select class="form-select" id="processingSpeed">
+                                            <option value="slow">کند</option>
+                                            <option value="normal" selected>معمولی</option>
+                                            <option value="fast">سریع</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="button" class="btn btn-primary" onclick="executeModule()" style="width: 100%;">
+                                🚀 شروع پردازش
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="results-container" id="resultsContainer" style="display: none;">
+                        <div class="results-header">
+                            <h3 class="results-title">نتایج اجرا</h3>
+                            <div class="execution-info">
+                                <span id="executionTime">زمان: -</span>
+                                <span id="executionStatus">وضعیت: -</span>
+                            </div>
+                        </div>
+                        <div class="results-content" id="resultsContent">
+                            <!-- نتایج在这里显示 -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- تب تاریخچه -->
+                <div id="history-tab" class="tab-panel">
+                    <h3 style="margin-bottom: 1.5rem; color: var(--primary);">تاریخچه اجراهای قبلی</h3>
+                    <div class="history-list" id="historyList">
+                        <!-- تاریخچه اجرا在这里加载 -->
+                    </div>
+                </div>
+
+                <!-- تب مستندات -->
+                <div id="docs-tab" class="tab-panel">
+                    <div class="docs-content" id="docsContent">
+                        <!-- مستندات在这里加载 -->
+                    </div>
+                </div>
+
+                <!-- تب تنظیمات -->
+                <div id="settings-tab" class="tab-panel">
+                    <h3 style="margin-bottom: 1.5rem; color: var(--primary);">تنظیمات ماژول</h3>
+                    <div class="execution-form">
+                        <div class="form-group">
+                            <label class="form-label">محدودیت استفاده ماهانه</label>
+                            <select class="form-select" id="usageLimit">
+                                <option value="1000">۱۰۰۰ درخواست</option>
+                                <option value="5000" selected>۵۰۰۰ درخواست</option>
+                                <option value="10000">۱۰۰۰۰ درخواست</option>
+                                <option value="unlimited">نامحدود</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">ذخیره‌سازی نتایج</label>
+                            <select class="form-select" id="resultStorage">
+                                <option value="7days">۷ روز</option>
+                                <option value="30days" selected>۳۰ روز</option>
+                                <option value="90days">۹۰ روز</option>
+                                <option value="forever">همیشه</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                <input type="checkbox" id="autoUpdate" checked>
+                                بروزرسانی خودکار ماژول
+                            </label>
+                        </div>
+
+                        <button class="btn btn-primary" onclick="saveSettings()">
+                            💾 ذخیره تنظیمات
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const token = localStorage.getItem('tetra_token');
+        const urlParams = new URLSearchParams(window.location.search);
+        const moduleId = window.location.pathname.split('/').pop();
+        
+        if (!token) {
+            window.location.href = '/login';
+        }
+
+        let currentModule = null;
+        let executionHistory = [];
+
+        async function loadModuleData() {
+            try {
+                const response = await fetch(`/api/modules/${moduleId}`, {
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    currentModule = data.module;
+                    updateModuleDisplay();
+                    
+                    if (!currentModule.isPurchased) {
+                        showPurchaseWarning();
+                    }
+                } else {
+                    window.location.href = '/modules';
+                }
+            } catch (error) {
+                console.error('Error loading module data:', error);
+                window.location.href = '/modules';
+            }
+        }
+
+        function updateModuleDisplay() {
+            // آپدیت اطلاعات ماژول
+            document.getElementById('moduleTitle').textContent = currentModule.name;
+            document.getElementById('moduleDescription').textContent = currentModule.description;
+            document.getElementById('moduleVersion').textContent = `ورژن: ${currentModule.version}`;
+            
+            document.getElementById('sidebarModuleName').textContent = currentModule.name;
+            document.getElementById('sidebarVersion').textContent = `ورژن: ${currentModule.version}`;
+            document.getElementById('moduleIcon').textContent = getModuleIcon(currentModule.id);
+
+            // آپدیت آمار
+            document.getElementById('statPerformance').textContent = `${currentModule.performance}%`;
+            document.getElementById('statRequests').textContent = currentModule.instance?.statistics?.requests || 0;
+            
+            if (currentModule.isPurchased) {
+                document.getElementById('purchaseBadge').style.display = 'flex';
+            }
+
+            // آپدیت مستندات
+            updateDocumentation();
+            
+            // لود تاریخچه
+            loadExecutionHistory();
+        }
+
+        function getModuleIcon(moduleId) {
+            const icons = {
+                'ai-quantum-core': '🤖',
+                'quantum-writer-pro': '📝',
+                'nlp-master': '🧠',
+                'quantum-wallet': '💼',
+                'security-shield': '🛡️',
+                'quantum-analytics': '📊',
+                'trading-master': '🤖',
+                'blockchain-explorer': '🔗',
+                'api-orchestrator': '⚙️',
+                'quantum-visualizer': '🔮',
+                'neural-network-pro': '🧠',
+                'crypto-vault': '💰'
+            };
+            return icons[moduleId] || '🏗️';
+        }
+
+        function updateDocumentation() {
+            const docsContent = document.getElementById('docsContent');
+            
+            docsContent.innerHTML = `
+                <div class="docs-section">
+                    <h3 class="docs-title">📖 معرفی ماژول</h3>
+                    <p>${currentModule.description}</p>
+                    <div class="feature-list">
+                        ${currentModule.features.map(feature => `
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                <span>${feature}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <div class="docs-section">
+                    <h3 class="docs-title">⚡ نحوه استفاده</h3>
+                    <p>برای استفاده از این ماژول، پارامترهای مورد نیاز را در تب "اجرا" وارد کرده و دکمه "شروع پردازش" را بزنید.</p>
+                    
+                    <div class="code-block">
+// مثال استفاده از ماژول ${currentModule.name}
+const parameters = {
+    operation: "analyze",
+    data: "داده‌های ورودی",
+    precision: "high"
+};
+
+const result = await module.execute(parameters);
+                    </div>
+                </div>
+
+                <div class="docs-section">
+                    <h3 class="docs-title">🔧 پارامترهای ورودی</h3>
+                    <p><strong>نوع عملیات:</strong> تحلیل، پردازش، تولید یا بهینه‌سازی</p>
+                    <p><strong>داده ورودی:</strong> متن، داده‌های عددی یا فایل</p>
+                    <p><strong>سطح دقت:</strong> تنظیم دقت پردازش</p>
+                </div>
+
+                <div class="docs-section">
+                    <h3 class="docs-title">📊 خروجی‌ها</h3>
+                    <p>نتایج پردازش در قالب JSON بازگردانده می‌شود و شامل:</p>
+                    <ul>
+                        <li>داده‌های پردازش شده</li>
+                        <li>آمار و متریک‌ها</li>
+                        <li>زمان اجرا</li>
+                        <li>وضعیت عملیات</li>
+                    </ul>
+                </div>
+            `;
+        }
+
+        async function executeModule() {
+            if (!currentModule.isPurchased) {
+                alert('لطفاً ابتدا این ماژول را خریداری کنید.');
+                return;
+            }
+
+            const operationType = document.getElementById('operationType').value;
+            const inputData = document.getElementById('inputData').value;
+            const precisionLevel = document.getElementById('precisionLevel').value;
+            const processingSpeed = document.getElementById('processingSpeed').value;
+
+            // نمایش اسپینر
+            const resultsContainer = document.getElementById('resultsContainer');
+            const resultsContent = document.getElementById('resultsContent');
+            resultsContainer.style.display = 'block';
+            resultsContent.innerHTML = '<div class="loading-spinner"></div>';
+
+            document.getElementById('executionTime').textContent = 'زمان: در حال پردازش...';
+            document.getElementById('executionStatus').textContent = 'وضعیت: در حال اجرا';
+
+            try {
+                const response = await fetch(`/api/modules/${moduleId}/execute`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        action: operationType,
+                        parameters: {
+                            data: inputData,
+                            precision: precisionLevel,
+                            speed: processingSpeed,
+                            timestamp: new Date().toISOString()
+                        }
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // نمایش نتایج
+                    resultsContent.innerHTML = formatResults(data.result);
+                    document.getElementById('executionTime').textContent = 
+                        `زمان: ${new Date().toLocaleString('fa-IR')}`;
+                    document.getElementById('executionStatus').textContent = 'وضعیت: موفق';
+
+                    // اضافه کردن به تاریخچه
+                    addToHistory(operationType, data.result);
+                    
+                    showNotification('ماژول با موفقیت اجرا شد', 'success');
+                } else {
+                    resultsContent.innerHTML = `خطا: ${data.error}`;
+                    document.getElementById('executionStatus').textContent = 'وضعیت: ناموفق';
+                    showNotification('خطا در اجرای ماژول', 'error');
+                }
+            } catch (error) {
+                resultsContent.innerHTML = `خطا در ارتباط با سرور: ${error.message}`;
+                document.getElementById('executionStatus').textContent = 'وضعیت: خطا';
+                showNotification('خطا در ارتباط با سرور', 'error');
+            }
+        }
+
+        function formatResults(result) {
+            if (typeof result === 'string') {
+                return result;
+            }
+
+            return JSON.stringify(result, null, 2);
+        }
+
+        function loadExecutionHistory() {
+            // شبیه‌سازی تاریخچه اجرا
+            executionHistory = [
+                {
+                    id: 1,
+                    action: 'analyze',
+                    result: 'تحلیل موفقیت‌آمیز انجام شد',
+                    timestamp: new Date(Date.now() - 3600000).toISOString()
+                },
+                {
+                    id: 2,
+                    action: 'process',
+                    result: 'پردازش داده‌ها تکمیل شد',
+                    timestamp: new Date(Date.now() - 7200000).toISOString()
+                },
+                {
+                    id: 3,
+                    action: 'generate',
+                    result: 'محتوا با موفقیت تولید شد',
+                    timestamp: new Date(Date.now() - 10800000).toISOString()
+                }
+            ];
+
+            updateHistoryDisplay();
+        }
+
+        function updateHistoryDisplay() {
+            const historyList = document.getElementById('historyList');
+            
+            historyList.innerHTML = executionHistory.map(entry => `
+                <div class="history-item">
+                    <div class="history-time">
+                        ${new Date(entry.timestamp).toLocaleString('fa-IR')}
+                    </div>
+                    <div class="history-action">
+                        عملیات: ${getActionText(entry.action)}
+                    </div>
+                    <div class="history-result">
+                        ${entry.result}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addToHistory(action, result) {
+            const newEntry = {
+                id: executionHistory.length + 1,
+                action: action,
+                result: typeof result === 'string' ? result : 'پردازش موفقیت‌آمیز',
+                timestamp: new Date().toISOString()
+            };
+
+            executionHistory.unshift(newEntry);
+            updateHistoryDisplay();
+        }
+
+        function getActionText(action) {
+            const actions = {
+                'analyze': 'تحلیل',
+                'process': 'پردازش',
+                'generate': 'تولید',
+                'optimize': 'بهینه‌سازی'
+            };
+            return actions[action] || action;
+        }
+
+        function showContentTab(tabName) {
+            // مخفی کردن تمام تب‌ها
+            document.querySelectorAll('.tab-panel').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.content-tab').forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // نمایش تب انتخاب شده
+            document.getElementById(tabName + '-tab').classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function showPurchaseWarning() {
+            const resultsContainer = document.getElementById('resultsContainer');
+            resultsContainer.style.display = 'block';
+            document.getElementById('resultsContent').innerHTML = `
+                <div style="text-align: center; padding: 2rem;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🔒</div>
+                    <h3 style="color: var(--warning); margin-bottom: 1rem;">ماژول خریداری نشده</h3>
+                    <p>برای استفاده از این ماژول، باید آن را خریداری کنید.</p>
+                    <button class="btn btn-primary" onclick="purchaseModule()" style="margin-top: 1rem;">
+                        🛒 خرید ماژول - ${currentModule.price.toLocaleString()} TETRA
+                    </button>
+                </div>
+            `;
+        }
+
+        async function purchaseModule() {
+            try {
+                const response = await fetch(`/api/modules/${moduleId}/purchase`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showNotification('ماژول با موفقیت خریداری شد!', 'success');
+                    currentModule.isPurchased = true;
+                    document.getElementById('purchaseBadge').style.display = 'flex';
+                    document.getElementById('resultsContainer').style.display = 'none';
+                } else {
+                    showNotification(data.error, 'error');
+                }
+            } catch (error) {
+                showNotification('خطا در خرید ماژول', 'error');
+            }
+        }
+
+        function saveSettings() {
+            showNotification('تنظیمات با موفقیت ذخیره شد', 'success');
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: ${type === 'error' ? 'var(--danger)' : 
+                           type === 'success' ? 'var(--success)' : 'var(--primary)'};
+                color: ${type === 'error' ? 'white' : 'black'};
+                padding: 1rem 1.5rem;
+                border-radius: 10px;
+                z-index: 10000;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        function logout() {
+            localStorage.removeItem('tetra_token');
+            window.location.href = '/login';
+        }
+
+        // اضافه کردن استایل برای انیمیشن
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // بارگذاری اولیه
+        document.addEventListener('DOMContentLoaded', loadModuleData);
+    </script>
+</body>
+</html>

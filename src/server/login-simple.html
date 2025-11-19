@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 ورود به Tetra Ecosystem</title>
+    <style>
+        :root {
+            --primary: #00ff88;
+            --secondary: #302b63;
+            --dark: #0f0c29;
+            --light: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: linear-gradient(135deg, var(--dark), var(--secondary));
+            color: var(--light);
+            font-family: Tahoma;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            background: rgba(255,255,255,0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .logo { font-size: 3rem; margin-bottom: 1rem; }
+        .title { 
+            font-size: 1.8rem; 
+            margin-bottom: 0.5rem; 
+            color: var(--primary);
+        }
+        .subtitle { opacity: 0.8; margin-bottom: 2rem; }
+
+        .form-group { margin-bottom: 1rem; text-align: right; }
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: black;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .demo-info {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .debug {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(255,0,0,0.1);
+            border-radius: 5px;
+            font-size: 0.8rem;
+            text-align: left;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">🏆</div>
+        <h1 class="title">Tetra Ecosystem</h1>
+        <p class="subtitle">ورود به پنل کاربری</p>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <input type="text" class="form-input" id="username" placeholder="نام کاربری" value="TetraMaster" required>
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-input" id="password" placeholder="رمز عبور" value="MasterTetra2024!" required>
+            </div>
+            <button type="submit" class="btn">🚀 ورود به سیستم</button>
+        </form>
+
+        <div class="debug" id="debugInfo"></div>
+
+        <div class="demo-info">
+            <strong>💡 اطلاعات تست:</strong><br>
+            کاربری: TetraMaster<br>
+            رمز: MasterTetra2024!<br>
+            یا<br>
+            کاربری: testuser<br>
+            رمز: test123
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            const debugInfo = document.getElementById('debugInfo');
+            debugInfo.style.display = 'block';
+            debugInfo.innerHTML = '🔄 در حال ارسال درخواست...';
+
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    debugInfo.innerHTML = '✅ ورود موفق! در حال انتقال...';
+                    localStorage.setItem('tetra_token', data.token);
+                    setTimeout(() => {
+                        window.location.href = '/dashboard';
+                    }, 1000);
+                } else {
+                    debugInfo.innerHTML = '❌ خطا: ' + data.error;
+                }
+            } catch (error) {
+                debugInfo.innerHTML = '❌ خطای شبکه: ' + error.message;
+            }
+        });
+    </script>
+</body>
+</html>
